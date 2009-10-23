@@ -51,17 +51,21 @@ You'll need a PEAR installation on your system.
     pear channel-discover pear.lagged.de
     pear install lagged/TillStore
 
-Depending on your system, this sets up TillStore in /usr/bin/TillStore and libraries in:
+#### What does it install?
+
+The location depends on your system, and PEAR configuration.
+
+*Libraries*
 
  * /usr/share/php/TillStore.php
  * /usr/share/php/TillStore/Exception.php
  * /usr/share/php/TillStore/Server.php
 
-Executable:
+*Executable*
  
  * /usr/bin/TillStore
 
-Configuration:
+*Configuration*
 
  * /usr/share/php/data/TillStore/etc/default.ini
 
