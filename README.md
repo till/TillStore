@@ -66,14 +66,16 @@ By default TillStore starts on `localhost:31337`. You may override these setting
  * Start TillStore: `/usr/bin/TillStore`
  * Curl examples:
 
-    till@home:~/$ curl -X GET http://localhost:31337/foo
-    Not found.
+    * Command: `curl -X GET http://localhost:31337/foo`
+    * Response: `Not found.`
 
-    till@home:~/$ curl -X POST -d bar http://localhost:31337/foo
-    OK
+    * Command: `curl -X POST -d bar http://localhost:31337/foo`
+    * Response: `OK`
 
-    till@home:~/$ curl -X GET http://localhost:31337/foo
-    bar
+    * Command: `curl -X GET http://localhost:31337/foo`
+    * Response: `bar`
+
+ (In a series, of course.)
 
  * Shutdown the server:
 
