@@ -40,6 +40,14 @@ You'll need a PEAR installation on your system.
 
 ### Install TillStore
 
+#### From Github:
+
+    git clone git://github.com/till/TillStore.git
+    cd TillStore
+    pear install -f package.xml
+
+#### From my PEAR channel (soon!)
+
     pear channel-discover pear.lagged.de
     pear install lagged/TillStore
 
