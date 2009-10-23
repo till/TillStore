@@ -1,0 +1,130 @@
+#!@php_bin@
+<?php
+/**
+ * bin/TillStore
+ *
+ * PHP Version 5
+ *
+ * @category   Database
+ * @package    TillStore
+ * @subpackage TillStore_Server
+ * @author     Till Klampaeckel <till@php.net>
+ * @license    http://www.opensource.org/licenses/bsd-license.html BSD License
+ * @version    SVN: $Id$
+ * @link       http://github.com/till/TillStore
+ */
+
+/**
+ * Executable to start the HTTP server for TillStore.
+ *
+ * @category   Database
+ * @package    TillStore
+ * @subpackage TillStore_Server
+ * @author     Till Klampaeckel <till@php.net>
+ * @license    http://www.opensource.org/licenses/bsd-license.html BSD License
+ * @version    Release: @package_version@
+ * @link       http://github.com/till/TillStore
+ */
+$libDir = '@php_dir@';
+if (strstr($libDir, 'php_dir')) {
+    // we must be inside the VCS
+    $libDir = dirname(dirname(__FILE__));
+}
+
+set_include_path(
+    $libDir . ':' .
+    get_include_path()
+);
+
+require_once 'TillStore.php';
+require_once 'TillStore/Server.php';
+
+$etcDir = '@data_dir@/TillStore/etc';
+if (strstr($etcDir, 'data_dir')) {
+    $etcDir = dirname(__FILE__) . '/../etc';
+}
+
+$config = TillStore_Server::readConfig($etcDir);
+
+if ($config['socket'] === false) {
+    $address = AF_INET;
+} else {
+    $address = AF_UNIX;
+}
+
+$tillServer = new TillStore_Server($config);
+set_error_handler(array($tillServer, 'errorHandler'));
+register_shutdown_function(array($tillServer, 'shutdown'));
+
+$tillServer->start();
+
+$motd = <<< EOF
+ _________________________ 
+< Dragons love TillStore! >
+ ------------------------- 
+                       \                    ^    /^
+                        \                  / \  // \
+                         \   |\___/|      /   \//  .\
+                          \  /O  O  \__  /    //  | \ \           *----*
+                            /     /  \/_/    //   |  \  \          \   |
+                            @___@`    \/_   //    |   \   \         \/\ \
+                           0/0/|       \/_ //     |    \    \         \  \
+                       0/0/0/0/|        \///      |     \     \       |  |
+                    0/0/0/0/0/_|_ /   (  //       |      \     _\     |  /
+                 0/0/0/0/0/0/`/,_ _ _/  ) ; -.    |    _ _\.-~       /   /
+                             ,-}        _      *-.|.-~-.           .~    ~
+            \     \__/        `/\      /                 ~-. _ .-~      /
+             \____(oo)           *.   }            {                   /
+             (    (--)          .----~-.\        \-`                 .~
+             //__\\  \__ Me 2!  ///.----..<        \             _ -~
+            //    \\               ///-._ _ _ _ _ _ _{^ - - - - ~
+EOF;
+
+echo $motd . PHP_EOL . PHP_EOL;
+
+$tillServer->setTillStore(new TillStore);
+
+while (true) {
+
+    $status = $tillServer->listen();
+    if ($status === false) {
+
+        echo "Listen: false" . PHP_EOL;
+
+        sleep(1);
+        continue;
+    }
+
+    // accept commands
+    try {
+
+        $status = $tillServer->handle();
+        if ($status === false) {
+
+            echo "Handle: false" . PHP_EOL;
+            break;
+        }
+
+    } catch (TillStoreException $e) {
+
+        // handle exception and do shit
+        echo "The storage layer returned the following error:" . PHP_EOL;
+        echo "{$e->getMessage()}";
+        sleep(5);
+        break;
+
+    } catch (Exception $e) {
+
+        echo "Error running TillStore:" . PHP_EOL;
+        echo "{$e->getMessage()} (Code: {$e->getCode()})" . PHP_EOL;
+
+        $tillServer->shutdown();
+        exit(1);
+
+    }
+}
+
+$tillServer->shutdown();
+
+echo "Shutting down TillStore. Have a great day!" . PHP_EOL;
+exit(0);

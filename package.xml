@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.7.0RC2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>TillStore</name>
+ <channel>pear.php.net</channel>
+ <summary>A key-value-store.</summary>
+ <description>
+  A proof of concept for a key-value-store written in PHP.
+ </description>
+ <lead>
+  <name>Till Klampaeckel</name>
+  <user>till</user>
+  <email>till@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2009-10-23</date>
+ <time>21:30:00</time>
+ <version>
+  <release>0.1.0</release>
+  <api>0.1.0</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/bsd-license.html">BSD License</license>
+ <notes>
+* initial release
+ </notes>
+ <contents>
+  <dir name="/">
+   <dir name="bin">
+    <file baseinstalldir="" name="TillStore" role="script">
+     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir>
+   <dir name="etc">
+    <file name="default.ini" role="data" />
+   </dir>
+   <dir name="TillStore">
+    <file name="Exception.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="Server.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir>
+   <dir name="tests">
+    <file role="test" baseinstalldir="TillStore" name="TillStoreTestCase.php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir>
+   <file role="doc" baseinstalldir="Services_Scrim" name="README.md" />
+   <file role="php" name="TillStore.php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.10</min>
+   </php>
+   <pearinstaller>
+    <min>1.9.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease>
+  <filelist>
+   <install as="TillStore" name="bin/TillStore" />
+  </filelist>
+ </phprelease>
+ <changelog>
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2009-10-23</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.html">BSD License</license>
+   <notes>* initial release</notes>
+  </release>
+ </changelog>
+</package>
