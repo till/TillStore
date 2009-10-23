@@ -49,19 +49,29 @@ Depending on your system, this sets up TillStore in /usr/bin/TillStore and libra
  * /usr/share/php/TillStore/Exception.php
  * /usr/share/php/TillStore/Server.php
 
+Executable:
+ 
+ * /usr/bin/TillStore
+
+Configuration:
+
+ * /usr/share/php/data/TillStore/etc/default.ini
+
 (Try `pear list-files lagged/TillStore` to verify.)
 
 ## Usage
 
 By default TillStore starts on `localhost:31337`. You may override these settings in a local.ini.
 
- * Start TillStore: /usr/bin/TillStore (&)
+ * Start TillStore: `/usr/bin/TillStore`
  * Curl examples:
 
     till@home:~/$ curl -X GET http://localhost:31337/foo
     Not found.
+
     till@home:~/$ curl -X POST -d bar http://localhost:31337/foo
     OK
+
     till@home:~/$ curl -X GET http://localhost:31337/foo
     bar
 
