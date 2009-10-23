@@ -1,5 +1,5 @@
 <?php
-require_once dirname(dirname(__FILE__)) . '/server.php';
+require_once 'TillStore.php';
 require_once 'PHPUnit/Framework/TestCase.php';
 
 /**
