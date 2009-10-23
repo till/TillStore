@@ -77,10 +77,11 @@ By default TillStore starts on `localhost:31337`. You may override these setting
 
  (In a series, of course.)
 
- * Shutdown the server:
+ * Shutdown the server (_special_ administrator feature):
 
-    telnet localhost 31337
-    SHUTDOWN
+    `telnet localhost 31337`
+
+    `SHUTDOWN`
 
 # What ...
 
