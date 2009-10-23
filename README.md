@@ -46,6 +46,10 @@ You'll need a PEAR installation on your system.
     cd TillStore
     pear install -f package.xml
 
+Or:
+
+    pear install -f http://cloud.github.com/downloads/till/TillStore/TillStore-0.1.0.tgz
+
 #### From my PEAR channel (soon!)
 
     pear channel-discover pear.lagged.de
