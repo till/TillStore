@@ -4,9 +4,14 @@ Enough said. ;-) Well, maybe not.
 
 ## The History
 
-I went to nosqlberlin on Thursday, October 22nd, 2009. It was a pretty cool event and
-the talks were people presenting their database. Among those "new database" Redis,
-CouchDB, Riak and MongoDB (all pretty cool and _awesome_ projects!).
+I went to [nosqlberlin][] on Thursday, October 22nd, 2009. It was a pretty cool
+event and the talks were people presenting their new database. Among those _new_
+databases Redis, CouchDB, Riak and MongoDB (all pretty cool and _awesome_
+projects!).
+
+Redis and Riak are what people call key-value-stores. Not exactly a database, but a
+more or less dumb store for small sets of data. Think memcached -- those two are
+right down that alley. Which brings me to TillStore!
 
 Previously, I had joked with a friend about my own key-value-store -- TillStore, but
 I had actually never ever implemented it.
@@ -21,10 +26,9 @@ the street from where I live), did some work, and started hacking on TillStore. 
 not even 10 work hours later, this is the initial 0.1.0-alpha release (BE GENTLE).
 
 People may say, "WTF?!". Yeah, correct. I wrote a key-value-store in PHP. But I did
-not actually write it to power Yahoo!, I wrote it as a proof of concept, and because
-I can.
+not write it to power Yahoo!, I wrote it as a proof of concept, and because I can.
 
-Deal with. And enjoy!
+Deal with it. And enjoy! :-)
 
 ## Installation
 
