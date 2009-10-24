@@ -37,6 +37,7 @@
    </dir>
    <dir name="docs">
     <file role="doc" baseinstalldir="TillStore" name="benchmark.txt" />
+    <file role="doc" baseinstalldir="TillStore" name="INSTALL.md" />
    </dir>
    <dir name="etc">
     <file name="default.ini" role="data" />
