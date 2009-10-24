@@ -9,6 +9,8 @@ event and the talks were people presenting their new database. Among those _new_
 databases Redis, CouchDB, Riak and MongoDB (all pretty cool and _awesome_
 projects!).
 
+[nosqlberlin]: http://nosqlberlin.de/
+
 Redis and Riak are what people call key-value-stores. Not exactly a database, but a
 more or less dumb store for small sets of data. Think memcached -- those two are
 right down that alley. Which brings me to TillStore!
