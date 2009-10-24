@@ -34,7 +34,7 @@ Deal with it. And enjoy! :-)
 
 ## Installation
 
-Please see INSTALL.md.
+Please see docs/INSTALL.md.
 
 ## Usage
 

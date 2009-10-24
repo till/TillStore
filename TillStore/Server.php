@@ -60,7 +60,7 @@ class TillStore_Server
     public static function readConfig($etcDir = '/etc/tillstore')
     {
         $defaultConfig = parse_ini_file($etcDir . '/default.ini');
-
+        $localConfig = array();
         if (isset($defaultConfig['daemon']['socket'])) {
             $defaultConfig['daemon']['socket']
                 = (bool) $defaultConfig['daemon']['socket'];
