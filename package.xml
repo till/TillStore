@@ -12,11 +12,11 @@
   <email>till@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-10-23</date>
- <time>21:30:00</time>
+ <date>2009-10-24</date>
+ <time>16:50:00</time>
  <version>
-  <release>0.1.0</release>
-  <api>0.1.0</api>
+  <release>0.2.0</release>
+  <api>0.2.0</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -24,7 +24,9 @@
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.html">BSD License</license>
  <notes>
-* initial release
+* a lot of eyecandy (e.g. improved README (etc.) files)
+* #1 fixed an installer bug (@php_dir@ wasn't replaced)
+* a couple smaller fixes from janl
  </notes>
  <contents>
   <dir name="/">
@@ -65,7 +67,7 @@
  <dependencies>
   <required>
    <php>
-    <min>5.2.10</min>
+    <min>5.2.9</min>
    </php>
    <pearinstaller>
     <min>1.9.0</min>
@@ -78,6 +80,22 @@
   </filelist>
  </phprelease>
  <changelog>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2009-10-24</date>
+   <notes>
+* a lot of eyecandy (e.g. improved README (etc.) files)
+* #1 fixed an installer bug (@php_dir@ wasn't replaced)
+* a couple smaller fixes from janl
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.1.0</release>
