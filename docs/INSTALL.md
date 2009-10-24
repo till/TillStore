@@ -1,14 +1,22 @@
 # Installation
 
+## Requirements
+
 You'll need a PEAR installation on your system.
 
-## Ubuntu
+### Debian/Ubuntu
 
     apt-get install php-pear
 
-## FreeBSD
+### FreeBSD
 
-    cd /usr/ports/devel/php-pear && make install clean
+    cd /usr/ports/devel/pear && make install clean
+
+### Other OS'?
+
+See the [PEAR manual][manual].
+
+[manual]: http://pear.php.net/manual/en/installation.php
 
 ## Install TillStore
 
