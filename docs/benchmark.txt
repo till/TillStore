@@ -1,0 +1,83 @@
+till@till-laptop:~$ /usr/bin/TillStore 
+ _________________________ 
+< Dragons love TillStore! >
+ ------------------------- 
+                       \                    ^    /^
+                        \                  / \  // \
+                         \   |\___/|      /   \//  .\
+                          \  /O  O  \__  /    //  | \ \           *----*
+                            /     /  \/_/    //   |  \  \          \   |
+                            @___@`    \/_   //    |   \   \         \/\ \
+                           0/0/|       \/_ //     |    \    \         \  \
+                       0/0/0/0/|        \///      |     \     \       |  |
+                    0/0/0/0/0/_|_ /   (  //       |      \     _\     |  /
+                 0/0/0/0/0/0/`/,_ _ _/  ) ; -.    |    _ _\.-~       /   /
+                             ,-}        _      *-.|.-~-.           .~    ~
+            \     \__/        `/\      /                 ~-. _ .-~      /
+             \____(oo)           *.   }            {                   /
+             (    (--)          .----~-.\        \-`                 .~
+             //__\  \__ Me 2!  ///.----..<        \             _ -~
+            //    \               ///-._ _ _ _ _ _ _{^ - - - - ~
+
+
+till@till-laptop:~$ curl http://localhost:6969/bar
+Not found.
+till@till-laptop:~$ curl -X POST -d foo http://localhost:6969/bar
+OK
+till@till-laptop:~$ curl http://localhost:6969/bar
+foo
+till@till-laptop:~$ ab -n 10000 -c 100 http://localhost:6969/bar
+This is ApacheBench, Version 2.3 <$Revision: 655654 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        TillStore/0.1.0
+Server Hostname:        localhost
+Server Port:            6969
+
+Document Path:          /bar
+Document Length:        4 bytes
+
+Concurrency Level:      100
+Time taken for tests:   4.247 seconds
+Complete requests:      10000
+Failed requests:        0
+Write errors:           0
+Total transferred:      1520000 bytes
+HTML transferred:       40000 bytes
+Requests per second:    2354.56 [#/sec] (mean)
+Time per request:       42.471 [ms] (mean)
+Time per request:       0.425 [ms] (mean, across all concurrent requests)
+Transfer rate:          349.51 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    1   1.2      0      10
+Processing:    19   41   6.0     40      72
+Waiting:       18   41   5.9     39      72
+Total:         26   42   6.2     40      77
+
+Percentage of the requests served within a certain time (ms)
+  50%     40
+  66%     41
+  75%     42
+  80%     46
+  90%     51
+  95%     58
+  98%     59
+  99%     59
+ 100%     77 (longest request)

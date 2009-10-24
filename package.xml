@@ -35,6 +35,9 @@
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir>
+   <dir name="docs">
+    <file role="doc" baseinstalldir="TillStore" name="benchmark.txt" />
+   </dir>
    <dir name="etc">
     <file name="default.ini" role="data" />
    </dir>
