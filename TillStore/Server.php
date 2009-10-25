@@ -26,16 +26,33 @@
  */
 class TillStore_Server
 {
+    /**
+     * @var array
+     * @see self::shutdown()
+     */
     protected $disconnectOpt = array('l_onoff' => 1, 'l_linger' => 1);
 
+    /**
+     * @var array
+     * @see self::__construct()
+     */
     protected $config;
 
-    protected $tillIncomingSocket;
+    /**
+     * @var resource
+     */
+    protected $clientSocket;
     protected $tillSocket;
 
+    /**
+     * @var TillStore
+     */
     protected $tillStore;
 
-
+    /**
+     * Error Constants
+     * @access global
+     */
     const ERR_NOTFOUND = 'TillStorex404';
 
     /**
@@ -101,12 +118,12 @@ class TillStore_Server
      * Read incoming request.
      *
      * @return boolean
-     * @uses   self::$tillIncomingSocket
+     * @uses   self::$clientSocket
      * @uses   self::shutdown()
      */
     public function handle()
     {
-        $request = socket_read($this->tillIncomingSocket, 1024);
+        $request = socket_read($this->clientSocket, 1024);
         if ($request === false) {
             return false;
         }
@@ -133,7 +150,7 @@ class TillStore_Server
      */
     public function listen()
     {
-        return $this->tillIncomingSocket = socket_accept($this->tillSocket);
+        return $this->clientSocket = socket_accept($this->tillSocket);
     }
 
     /**
@@ -186,12 +203,12 @@ class TillStore_Server
      * If available, let's close the connection to the client.
      *
      * @return void
-     * @uses   self::$tillIncomingSocket
+     * @uses   self::$clientSocket
      */
     public function disconnectClient()
     {
-        if (is_resource($this->tillIncomingSocket)) {
-            socket_close($this->tillIncomingSocket);
+        if (is_resource($this->clientSocket)) {
+            socket_close($this->clientSocket);
         }
     }
 
@@ -230,7 +247,8 @@ class TillStore_Server
                 $headers[(strtolower($regs[1]))]    =    $regs[2];
             }
         }
-        //aggregate the content (POST data or so)
+
+        // aggregate the content (POST data or so)
         $body = '';
         for ($i = $i; $i < count($lines); $i++) {
             $body .= $lines[$i] . "\r\n";
@@ -262,7 +280,7 @@ class TillStore_Server
     protected function parseRequest($command)
     {
         if (!$this->validateRequestVerb($command)) {
-            $this->writeResponse("Unknown HTTP verb.");
+            $this->writeResponse("Unknown HTTP verb.", true, 400);
             return false;
         }
 
@@ -272,10 +290,19 @@ class TillStore_Server
 
         switch ($request['method']) {
         default:
+        case 'DELETE':
+            $status = $this->tillStore->delete($request['uri']);
+            if ($status === true) {
+                $this->writeResponse("OK");
+            } else {
+                $this->writeResponse("Server error.", true, 500);
+            }
+            break;
+
         case 'GET':
             $var = $this->tillStore->get($request['uri'], self::ERR_NOTFOUND);
             if ($var === self::ERR_NOTFOUND) {
-                $this->writeResponse("Not found.", true);
+                $this->writeResponse("Not found.", true, 404);
             } else {
                 $this->writeResponse($var);
             }
@@ -288,13 +315,14 @@ class TillStore_Server
                 $body = trim($request['body']);
             }
 
-            /*
+            /**
+            DEBUG CODE - echos on the server (fg).
             echo "BODY: $body"
                 . " - "
                 . var_export(empty($request['body']), true)
                 . " - "
                 . var_export($request, true) . PHP_EOL;
-            */
+            **/
 
             $this->tillStore->set($request['uri'], $body);
             $this->writeResponse("OK");
@@ -306,20 +334,29 @@ class TillStore_Server
     /**
      * Is this a valid request, let's see?
      *
-     * This function returns the verb or false. We currently support GET, POST
-     * and PUT.
+     * This function returns the verb or false. We currently support DELETE, GET,
+     * POST and PUT.
      *
      * @param string $command The command sent from the client.
      *
      * @return mixed False in case we don't support it, a string otherwise.
      * @see    self::parseRequest()
+     *
+     * @todo Code in this method duplicates {@link self::parseHttpRequest()}.
      */
     protected function validateRequestVerb($command)
     {
-        $method = substr($command, 0, 4);
-        $method = strtoupper(trim($method));
+        $lines = explode("\r\n", $command);
+        if (!preg_match("'([^ ]+) ([^ ]+) (HTTP/[^ ]+)'", $lines[0], $regs)) {
+            return false;
+        }
+        $method   = $regs[1];
 
-        switch ($method) {      
+        unset($lines);
+        unset($command);
+
+        switch ($method) {
+        case 'DELETE':
         case 'GET':
         case 'POST':
         case 'PUT':
@@ -337,16 +374,17 @@ class TillStore_Server
      *
      * In case of an error, we expect to be "first" and send a 404 back.
      *
-     * @param string $response Whatever we are supposed to send to the client
-     *                         (in the body).
-     * @param bool   $error    Is error, or not.
+     * @param string $response  Whatever we are supposed to send to the client
+     *                          (in the body).
+     * @param bool   $error     Is error, or not.
+     * @param int    $errorCode HTTP error code.
      *
      * @return void
      */
-    protected function writeResponse($response, $error = false)
+    protected function writeResponse($response, $error = false, $errorCode = 404)
     {
         if ($error === true) {
-            $errorCode = 404;
+            $errorCode = $errorCode;
         } else {
             $errorCode = 200;
         }
@@ -355,7 +393,8 @@ class TillStore_Server
         $responseHttp .= 'Connection: close' . PHP_EOL;
         $responseHttp .= 'Date: ' . date('r') . PHP_EOL;
         $responseHttp .= 'Server: TillStore/@package_version@ (Linux)' . PHP_EOL;
-        $responseHttp .= 'X-TillStore: ohai' . PHP_EOL;
+        $responseHttp .= 'X-TillStore-Greeting: ohai' . PHP_EOL;
+        $responseHttp .= 'X-TillStore-GetOnMyHorse: Lemonade' . PHP_EOL;
         $responseHttp .= 'Content-Type: text/plain' . PHP_EOL . PHP_EOL;
 
         $errorMsg = '';
@@ -378,7 +417,7 @@ class TillStore_Server
         }
 
         socket_send(
-            $this->tillIncomingSocket,
+            $this->clientSocket,
             $responseHttp,
             strlen($responseHttp),
             MSG_EOR
