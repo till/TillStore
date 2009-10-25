@@ -83,7 +83,7 @@ class TillStore
     {
         if ($ttl !== null) {
             if (!is_int($ttl)) {
-                throw new TillStoreException("Time to live has to be an integer.");
+                throw new TillStore_Exception("Time to live has to be an integer.");
             }
         }
         $filename = $this->getFilename($var);
@@ -120,7 +120,7 @@ class TillStore
      *
      * @return mixed
      * @uses   self::read()
-     * @throws TillStoreException In case the key exists, but is not readable.
+     * @throws TillStore_Exception In case the key exists, but is not readable.
      */
     public function get($var, $default = null)
     {
@@ -164,7 +164,7 @@ class TillStore
      * @param mixed  $default Optional: the default value.
      *
      * @return object
-     * @throws TillStoreException On permission error - when we can't read the file.
+     * @throws TillStore_Exception On permission error - when we can't read the file.
      *
      * @see  self::get()
      * @see  self::getTtl()
@@ -177,7 +177,7 @@ class TillStore
             return $default;
         }
         if (!is_readable($filename)) {
-            throw new TillStoreException("Internal read error.");
+            throw new TillStore_Exception("Internal read error.");
         }
         $data = file_get_contents($filename);
         $data = json_decode($data);
@@ -195,15 +195,15 @@ class TillStore
      * @param mixed  $ttl      The time to live.
      *
      * @return true
-     * @throws TillStoreException When the write fails.
+     * @throws TillStore_Exception When the write fails.
      * @see    self::set()
      */
     protected function write($filename, $value, $ttl)
     {
-        $fp = fopen($filename, 'w+');
-        if ($fp === false) {
-            throw new TillStoreException("Unable to write data.");
-        }
+        // $fp = fopen($filename, 'w+');
+        // if ($fp === false) {
+        //     throw new TillStore_Exception("Unable to write data.");
+        // }
 
         $expire = null;
         if ($ttl !== null) {
@@ -216,8 +216,13 @@ class TillStore
         );
         $data = json_encode($data);
 
-        fwrite($fp, $data);
-        fclose($fp);
-        return true;
+        $status = file_put_contents($filename, $data);
+        if ($status === true) {
+            return $status;
+        }
+        throw new TillStore_Exception("Unable to write data.");
+        // fwrite($fp, $data);
+        // fclose($fp);
+        // return true;
     }
 }
