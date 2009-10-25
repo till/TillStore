@@ -19,8 +19,9 @@ $do = 100000;
 
 $mask = '/dev/shm/bench-TillStore-%s';
 while ($do > 0) {
-    file_put_contents(sprintf($mask, $do), "foobar");
-    unlink(sprintf($mask, $do));
+    apc_file_put_contents(sprintf($mask, $do), "foobar");
+    // unlink(sprintf($mask, $do));
+    apc_delete(sprintf($mask, $do));
     --$do;
 }
 
@@ -28,4 +29,8 @@ function TillStore_file_put_contents($filename, $value) {
     $fp = fopen($filename, 'w');
     fwrite($fp, $value);
     fclose($fp);
+}
+
+function apc_file_put_contents($filename, $value) {
+    apc_store($filename, $value);
 }
