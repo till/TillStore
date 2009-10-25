@@ -24,7 +24,15 @@
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.html">BSD License</license>
  <notes>
-* introduced TillStore::delete()
+* TillStore::delete()
+  * introduced a delete feature
+  * exposing TillStore::delete() through HTTP-API
+* improved error handling/response
+* TillStore::write()
+  * switched to file_put_contents()
+  * replaced fopen(), fwrite(), fclose()
+  * added a benchmark script
+* csfix: TillStoreException > TillStore_Exception
  </notes>
  <contents>
   <dir name="/">
@@ -37,6 +45,7 @@
     </file>
    </dir>
    <dir name="docs">
+    <file role="doc" baseinstalldir="TillStore" name="bench-fh.php" />
     <file role="doc" baseinstalldir="TillStore" name="benchmark.txt" />
     <file role="doc" baseinstalldir="TillStore" name="HISTORY.md" />
     <file role="doc" baseinstalldir="TillStore" name="INSTALL.md" />
