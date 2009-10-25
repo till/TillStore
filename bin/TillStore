@@ -105,7 +105,7 @@ while (true) {
             break;
         }
 
-    } catch (TillStoreException $e) {
+    } catch (TillStore_Exception $e) {
 
         // handle exception and do shit
         echo "The storage layer returned the following error:" . PHP_EOL;

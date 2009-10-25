@@ -22,6 +22,6 @@
  * @version  Release: @package_version@
  * @link     http://github.com/till/TillStore
  */
-class TillStoreException extends Exception
+class TillStore_Exception extends Exception
 {
 }
