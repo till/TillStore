@@ -34,6 +34,13 @@ class TillStoreTestCase extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testDelete()
+    {
+        $var = 'foo' . mktime();
+        $this->tillStore->set($var, 'bar');
+        $this->assertEquals(true, $this->tillStore->delete($var));
+    }
+
     /**
      * @dataProvider setGetProvider
      */

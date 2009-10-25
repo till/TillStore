@@ -15,8 +15,8 @@
  <date>2009-10-24</date>
  <time>16:50:00</time>
  <version>
-  <release>0.2.0</release>
-  <api>0.2.0</api>
+  <release>0.3.0</release>
+  <api>0.3.0</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -24,9 +24,7 @@
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.html">BSD License</license>
  <notes>
-* a lot of eyecandy (e.g. improved README (etc.) files)
-* #1 fixed an installer bug (@php_dir@ wasn't replaced)
-* a couple smaller fixes from janl
+* introduced TillStore::delete()
  </notes>
  <contents>
   <dir name="/">

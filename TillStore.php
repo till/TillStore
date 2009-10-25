@@ -47,6 +47,30 @@ class TillStore
     }
 
     /**
+     * Delete a key.
+     *
+     * @param string $var The name of the key.
+     *
+     * @return boolean 'true' if the operation is successful, 'false' otherwise.
+     * @uses   self::getFilename()
+     */
+    public function delete($var)
+    {
+        $var = trim($var);
+        if (empty($var)) {
+            return false;
+        }
+        $filename = $this->getFilename($var);
+        if (!file_exists($filename)) {
+            return false;
+        }
+        if (!is_readable($filename)) {
+            return false;
+        }
+        return @unlink ($filename);
+    }
+
+    /**
      * Set a value!
      *
      * @param string $var   The name of the key.
