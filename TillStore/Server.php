@@ -144,7 +144,7 @@ class TillStore_Server
     }
 
     /**
-     * Make the server listen for incoming request.
+     * Make the server listen for an incoming request.
      *
      * @return mixed A resource (socket), or false.
      */
@@ -213,24 +213,45 @@ class TillStore_Server
     }
 
     /**
+     * Parse the very first line which contains all HTTP info from the incoming
+     * request.
+     *
+     * @param string $http The info (hopefully).
+     *
+     * @return array
+     * @throws TillStore_Exception When we are unable to parse the request info.
+     */
+    protected function parseHttpInfo($http)
+    {
+        if (!preg_match("'([^ ]+) ([^ ]+) (HTTP/[^ ]+)'", $http, $regs)) {
+            throw new TillStore_Exception("Could not parse HTTP request.");
+        }
+        if (!is_array($regs)) {
+            throw new TillStore_Exception("Could not parse HTTP request.");
+        }
+
+        return array(
+            'method'   => $regs[1],
+            'protocol' => $regs[3],
+            'uri'      => $regs[2],
+        );
+    }
+
+    /**
      * This is borrowed from HTTP_Server_Request
      *
      * @param string $command The command sent from the client.
      *
      * @return array
      * @see    self::parseRequest()
+     * @uses   self::parseHttpInfo()
      */
     protected function parseHttpRequest($command)
     {
         $lines = explode("\r\n", $command);
 
-        if (!preg_match("'([^ ]+) ([^ ]+) (HTTP/[^ ]+)'", $lines[0], $regs)) {
-            return false;
-        }
-        $method   = $regs[1];
-        $uri      = $regs[2];
-        $protocol = $regs[3];
-
+        $httpInfo = $this->parseHttpInfo($lines[0]);
+        extract($httpInfo);
 
         // $this->writeResponse("Debug: {$method}, {$uri}, $protocol");
 
@@ -274,18 +295,16 @@ class TillStore_Server
      * @param string $command The command sent from the client.
      *
      * @return void
-     * @uses   self::validateRequestVerb()
+     * @uses   self::isValidRequestVerb()
      * @uses   self::parseHttpRequest()
      */
     protected function parseRequest($command)
     {
-        if (!$this->validateRequestVerb($command)) {
+        $request = $this->parseHttpRequest($command);
+        if (!$this->isValidRequestVerb($request['method'])) {
             $this->writeResponse("Unknown HTTP verb.", true, 400);
             return false;
         }
-
-        $request = $this->parseHttpRequest($command);
-
         // $this->writeResponse("YES, WE CAN.");
 
         switch ($request['method']) {
@@ -339,28 +358,17 @@ class TillStore_Server
      *
      * @param string $command The command sent from the client.
      *
-     * @return mixed False in case we don't support it, a string otherwise.
+     * @return boolean False in case we don't support it, true otherwise.
      * @see    self::parseRequest()
-     *
-     * @todo Code in this method duplicates {@link self::parseHttpRequest()}.
      */
-    protected function validateRequestVerb($command)
+    protected function isValidRequestVerb($method)
     {
-        $lines = explode("\r\n", $command);
-        if (!preg_match("'([^ ]+) ([^ ]+) (HTTP/[^ ]+)'", $lines[0], $regs)) {
-            return false;
-        }
-        $method   = $regs[1];
-
-        unset($lines);
-        unset($command);
-
         switch ($method) {
         case 'DELETE':
         case 'GET':
         case 'POST':
         case 'PUT':
-            return $method;
+            return return;
             break;
 
         default:
