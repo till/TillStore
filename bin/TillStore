@@ -89,7 +89,7 @@ while (true) {
     $status = $tillServer->listen();
     if ($status === false) {
 
-        echo "Listen: false" . PHP_EOL;
+        // echo "Listen: false" . PHP_EOL;
 
         sleep(1);
         continue;
